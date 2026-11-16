@@ -32,3 +32,37 @@ ZIG is engineered as a lightweight, client-side geospatial web application with 
 * **Nearby POI Discovery:** Local radius search for Gas, EV Charging, Coffee, Food, Groceries, Parking, and Hospitals with instant one-tap detour addition.
 * **Incident Reporting & Hands-Free Voice Controls:** Report speed traps, hazards, or accidents hands-free, and control navigation via natural voice commands.
 * **Direct Google Maps Export:** Preserves exact street addresses and waypoints when exporting optimized routes directly to Google Maps.
+
+
+---
+
+## 3. System Flow & Architecture
+
+ZIG operates entirely client-side via a modular event-driven pipeline. Below is the end-to-end execution flow:
+
+[ User Input / Voice Command ]
+│
+▼
+┌───────────────────┐
+│  Geocoding Engine │ ──► ArcGIS / Photon / Nominatim API (Rooftop & Place Lookup)
+└─────────┬─────────┘
+│ (Lat/Lng Waypoints)
+▼
+┌───────────────────┐
+│   TSP Matrix Core │ ──► OSRM Table Service (Calculates Distance & Time Matrix)
+└─────────┬─────────┘
+│ (Optimized Stop Order)
+▼
+┌───────────────────┐
+│   Routing Engine  │ ──► OSRM Route Service (GeoJSON Polyline & Turn-by-Turn Steps)
+└─────────┬─────────┘
+│
+├──► [ Leaflet.js Map Renderer ] (Draws route, markers & vector avatars)
+├──► [ Cost & Fuel Calculator ] (Computes exact MPG / L/100km trip costs)
+└──► [ 60 FPS Demo Simulator ] (Animates vehicle avatar & HUD voice guidance)
+
+### Execution Lifecycle:
+1. **Input & Geocoding:** User types addresses or speaks commands. ZIG queries multi-provider geocoders to resolve accurate geographic coordinates.
+2. **Matrix Calculation:** When multiple stops are added, ZIG requests an OSRM distance matrix and runs its client-side TSP solver to determine the optimal sequence.
+3. **Route Generation:** The ordered coordinates are passed to OSRM's routing service to retrieve the exact polyline geometry and maneuver instructions.
+4. **Rendering & Simulation:** The Leaflet map renders the route layer, while internal state controllers power live navigation, POI overlays, and the 40x demo simulator.
