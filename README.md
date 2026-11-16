@@ -36,11 +36,21 @@ ZIG is engineered as a lightweight, client-side geospatial web application with 
 
 ---
 
+---
+
 ## 3. System Flow & Architecture
 
 ZIG operates entirely client-side via a modular event-driven pipeline. Below is the end-to-end execution flow:
 
-[ User Input / Voice Command ]
+### Execution Lifecycle:
+1. **Input & Geocoding:** User types addresses or speaks commands. ZIG queries multi-provider geocoders to resolve accurate geographic coordinates.
+2. **Matrix Calculation:** When multiple stops are added, ZIG requests an OSRM distance matrix and runs its client-side TSP solver to determine the optimal sequence.
+3. **Route Generation:** The ordered coordinates are passed to OSRM's routing service to retrieve the exact polyline geometry and maneuver instructions.
+4. **Rendering & Simulation:** The Leaflet map renders the route layer, while internal state controllers power live navigation, POI overlays, and the 40x demo simulator.
+
+
+```text
+ [ User Input / Voice Command ]
               │
               ▼
     ┌───────────────────┐
@@ -61,8 +71,3 @@ ZIG operates entirely client-side via a modular event-driven pipeline. Below is 
               ├──► [ Cost & Fuel Calculator ] (Computes exact MPG / L/100km trip costs)
               └──► [ 60 FPS Demo Simulator ] (Animates vehicle avatar & HUD voice guidance)
 
-### Execution Lifecycle:
-1. **Input & Geocoding:** User types addresses or speaks commands. ZIG queries multi-provider geocoders to resolve accurate geographic coordinates.
-2. **Matrix Calculation:** When multiple stops are added, ZIG requests an OSRM distance matrix and runs its client-side TSP solver to determine the optimal sequence.
-3. **Route Generation:** The ordered coordinates are passed to OSRM's routing service to retrieve the exact polyline geometry and maneuver instructions.
-4. **Rendering & Simulation:** The Leaflet map renders the route layer, while internal state controllers power live navigation, POI overlays, and the 40x demo simulator.
