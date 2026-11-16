@@ -41,25 +41,25 @@ ZIG is engineered as a lightweight, client-side geospatial web application with 
 ZIG operates entirely client-side via a modular event-driven pipeline. Below is the end-to-end execution flow:
 
 [ User Input / Voice Command ]
-│
-▼
-┌───────────────────┐
-│  Geocoding Engine │ ──► ArcGIS / Photon / Nominatim API (Rooftop & Place Lookup)
-└─────────┬─────────┘
-│ (Lat/Lng Waypoints)
-▼
-┌───────────────────┐
-│   TSP Matrix Core │ ──► OSRM Table Service (Calculates Distance & Time Matrix)
-└─────────┬─────────┘
-│ (Optimized Stop Order)
-▼
-┌───────────────────┐
-│   Routing Engine  │ ──► OSRM Route Service (GeoJSON Polyline & Turn-by-Turn Steps)
-└─────────┬─────────┘
-│
-├──► [ Leaflet.js Map Renderer ] (Draws route, markers & vector avatars)
-├──► [ Cost & Fuel Calculator ] (Computes exact MPG / L/100km trip costs)
-└──► [ 60 FPS Demo Simulator ] (Animates vehicle avatar & HUD voice guidance)
+              │
+              ▼
+    ┌───────────────────┐
+    │  Geocoding Engine │ ──► ArcGIS / Photon / Nominatim API (Rooftop & Place Lookup)
+    └─────────┬─────────┘
+              │ (Lat/Lng Waypoints)
+              ▼
+    ┌───────────────────┐
+    │   TSP Matrix Core │ ──► OSRM Table Service (Calculates Distance & Time Matrix)
+    └─────────┬─────────┘
+              │ (Optimized Stop Order)
+              ▼
+    ┌───────────────────┐
+    │   Routing Engine  │ ──► OSRM Route Service (GeoJSON Polyline & Turn-by-Turn Steps)
+    └─────────┬─────────┘
+              │
+              ├──► [ Leaflet.js Map Renderer ] (Draws route, markers & vector avatars)
+              ├──► [ Cost & Fuel Calculator ] (Computes exact MPG / L/100km trip costs)
+              └──► [ 60 FPS Demo Simulator ] (Animates vehicle avatar & HUD voice guidance)
 
 ### Execution Lifecycle:
 1. **Input & Geocoding:** User types addresses or speaks commands. ZIG queries multi-provider geocoders to resolve accurate geographic coordinates.
